@@ -1,58 +1,64 @@
-import pickle
-from datetime import datetime
+import os
+import pathlib
 
+from dash import dash, html, Output, Input, State, dcc
+import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 import dash_daq as daq
+
 import pandas as pd
-import plotly.graph_objects as go
-from dash import Input, Output, dash, dcc, html, State, dash_table
 
 app = dash.Dash(
-    title="Dashboard",
+    __name__,
+    external_stylesheets=[dbc.themes.SOLAR],
 )
+app.title = "Dashboard"
 
 
-suffix_row = "_row"
-suffix_button_id = "_button"
-suffix_sparkline_graph = "_sparkline_graph"
-suffix_count = "_count"
-suffix_ooc_n = "_OOC_number"
-suffix_ooc_g = "_OOC_graph"
-suffix_indicator = "_indicator"
+# Composants
+def render_header():
+    title = html.H4(
+        "DASHBOARD",
+        style={
+            "marginTop": 5,
+            "marginLeft": "10px",
+        },
+        className="text-white",
+    )
+    sub_title = html.H5(
+        "Une petite description.",
+        style={"marginLeft": "10px"},
+        className="text-white",
+    )
+    logo_image = html.Img(
+        src=app.get_asset_url("dash-logo.png"),
+        style={
+            "float": "right",
+            "height": 50,
+            "padding": 10,
+        },
+        className="mt-3",
+    )
+    link = html.A(
+        logo_image,
+        href="https://plotly.com/dash/",
+    )
 
-# Definition des composants
-
-
-def build_banner():
-    return html.Div(
-        id="banner",
-        className="banner",
-        children=[
-            html.Div(
-                id="banner-text",
-                children=[
-                    html.H5("Manufacturation."),
-                    html.H6("Processus de control."),
-                ],
+    return dbc.Row(
+        [
+            dbc.Col(
+                [
+                    dbc.Row([title]),
+                    dbc.Row([sub_title]),
+                ]
             ),
-            html.Div(
-                id="banner-logo",
-                children=[
-                    html.A(
-                        html.Button("PLOTLY"),
-                        href="https://plotly.com/get-demo/",
-                    ),
-                    html.A(
-                        html.Img(id="logo", src=app.get_asset_url("dash-logo.png")),
-                        href="https://plotly.com/dash/",
-                    ),
-                ],
-            ),
+            dbc.Col(link),
         ],
+        className="my-1",
     )
 
 
-def build_tabs():
+def render_tabs():
     return html.Div(
         id="tabs",
         className="tabs",
@@ -60,58 +66,124 @@ def build_tabs():
             dcc.Tabs(
                 id="app-tabs",
                 value="tab2",
-                className="custom-tabs",
+                className="custum-tabs",
                 children=[
                     dcc.Tab(
-                        id="Specs-tab",
-                        label="Specification Settings",
+                        id="setting_tab",
+                        label="PARAMETRAGES DU DASHBOARD",
                         value="tab1",
                         className="custom-tab",
                         selected_className="custom-tab--selected",
                     ),
                     dcc.Tab(
-                        id="Control-chart-tab",
-                        label="Control Charts Dashboard",
+                        id="control_tab",
+                        label="GRAPHES DE CONTRôLE",
                         value="tab2",
                         className="custom-tab",
                         selected_className="custom-tab--selected",
                     ),
                 ],
-            )
+            ),
         ],
     )
 
 
-size_auto = "auto"
-sidebar_size = 12
-graph_size = 10
+def rendre_side_bar_graph():
+    return html.Div(
+        id="",
+        children=[
+            html.Div(
+                [
+                    html.P("ID"),
+                    daq.LEDDisplay(
+                        id="",
+                        value="1704",
+                        color="#92e0d3",
+                        backgroundColor="#1e2130",
+                        size=50,
+                    ),
+                ],
+                className="custum_card mb-5",
+            ),
+            html.Div(
+                [
+                    html.P("FREQUENCE"),
+                    daq.Gauge(
+                        id="",
+                        max=2,
+                        min=0,
+                        showCurrentValue=True,
+                    ),
+                ],
+                className="custum_card mb-5",
+            ),
+            html.Div(
+                [
+                    daq.StopButton(
+                        id="",
+                        size=100,
+                        n_clicks=0,
+                    )
+                ],
+                id="",
+            ),
+        ],
+        className="bg-dark p-3",
+    )
 
-app.layout = html.Div(
-    id="big-app-container",
+
+app.layout = dbc.Container(
+    fluid=True,
     children=[
-        build_banner(),
-        dcc.Interval(
-            id="interval-component",
-            interval=2 * 1000,
-            n_intervals=50,
-            disabled=True,
-        ),
+        render_header(),
+        html.Hr(),
+        render_tabs(),
         html.Div(
-            id="app-container",
-            children=[
-                build_tabs(),
-                html.Div(
-                    id="app-content",
-                ),
-            ],
-        ),
-        dcc.Store(id="value-setter", data={}),
-        dcc.Store(
-            id="n-interval",
-            data=50,
+            id="app-content",
         ),
     ],
+    id="app-container",
 )
 
 
-app.run_server(debug=True, port=8051)
+@app.callback(
+    [Output("app-content", "children")],
+    [Input("app-tabs", "value")],
+)
+def render_tab_content(tab_switch):
+    if tab_switch == "tab1":
+        return [
+            html.Div(
+                [
+                    html.H1("Element de la Tabs 1"),
+                ],
+            )
+        ]
+    return [
+        dbc.Row(
+            [
+                dbc.Col(
+                    [
+                        rendre_side_bar_graph(),
+                    ],
+                    md=3,
+                ),
+                dbc.Col(
+                    [
+                        html.Div(
+                            id="graph_container",
+                            children=[
+                                html.P("Les autres elements ici"),
+                            ],
+                        ),
+                    ],
+                    md=9,
+                ),
+            ],
+            id="",
+            className="mt-3",
+        )
+    ]
+
+
+app.run_server(debug=True, port=8050)
