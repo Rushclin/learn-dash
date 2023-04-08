@@ -1,6 +1,6 @@
 # My Board.
 
-Dashboard interactif DASH.
+Dashboard interactif DASHBOARD.
 
 ## Installation
 
