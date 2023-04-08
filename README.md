@@ -7,7 +7,10 @@ Dashboard interactif DASHBOARD.
 To install the application, follow these steps:
 
 1. ## Clone the repository with
-   `git clone https://github.com/Rushclin/learn-dash.git`.
+   To clone this project, use command
+   ```
+    git clone https://github.com/Rushclin/learn-dash.git
+   ```
 2. ## Install the dependencies with `pip3`.
 3. ## Start the development server with `python3 app.py`.
 
