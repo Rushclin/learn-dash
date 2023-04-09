@@ -7,7 +7,7 @@ from layouts.navbar import Navbar
 
 class Layout:
     def __init__(self):
-        print("============= INIT LAYOUT  =============")
+        print("============= INIT LAYOUT")
         self.header = Header().get_header()
         self.navbar = Navbar().get_navbar()
 

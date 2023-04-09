@@ -5,6 +5,8 @@ from dash import html
 
 class Settings:
     def __init__(self):
+        print("============= INIT SETTINGS PAGE ")
+
         self.content = html.Div(
             [
                 html.H1(

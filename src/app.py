@@ -5,6 +5,7 @@ from pages.dashboard import Dashboard
 from pages.settings import Settings
 
 
+# Classe principale de l'application.
 class App:
     def __init__(self):
         self.layout = Layout().get_layout()
@@ -21,6 +22,8 @@ class App:
 
         app.layout = self.layout
 
+        # Definition de tous les methodes de callback
+
         @app.callback(
             Output("app-content", "children"),
             Input("app-tabs", "value"),
@@ -35,5 +38,5 @@ class App:
 
 # RUN THE APP
 if __name__ == "__main__":
-    print("============= RUN APP =============")
+    print("============= RUN APP ")
     App().run_app()
