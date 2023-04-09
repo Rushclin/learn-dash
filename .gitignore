@@ -1,0 +1,24 @@
+# Ignore les fichiers de compilation Python
+__pycache__/
+*.pyc
+
+# Ignore les fichiers d'environnement virtuel
+venv/
+env/
+*.env
+
+# Ignore les fichiers de logs
+*.log
+
+# Ignore les fichiers de sauvegarde de l'éditeur
+.vscode/
+.idea/
+
+# Ignore les fichiers de sortie de l'installation de package pip
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+
+# Ignore les fichiers de configuration locale
+*.local
