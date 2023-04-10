@@ -22,7 +22,7 @@ class App:
 
         app.layout = self.layout
 
-        # Definition de tous les methodes de callback
+        # Definition de toutes les methodes de callback
 
         @app.callback(
             Output("app-content", "children"),
