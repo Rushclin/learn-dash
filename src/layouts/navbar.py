@@ -11,7 +11,7 @@ class Navbar:
             children=[
                 dcc.Tabs(
                     id="app-tabs",
-                    value="tab2",
+                    value="graphes",
                     className="custum-tabs mx-5 mb-2",
                     children=[
                         dcc.Tab(
