@@ -1,7 +1,8 @@
-from dash import dash, html, dcc, Input, Output, State
+from dash import dash, html, Input, Output
 import dash_bootstrap_components as dbc
 from layouts.layout import Layout
 import datetime as datetime
+import pandas as pd
 
 
 class App:
@@ -9,7 +10,11 @@ class App:
         self.title = 'Petit Chrnometre'
         self.layout = Layout().render()
 
+    def load_data(self):
+        return
+
     def run_app(self):
+        print(self.load_data())
         app = dash.Dash(
             __name__,
             external_stylesheets=[
@@ -27,6 +32,7 @@ class App:
         )
         def update_times(n):
             time = datetime.datetime.now()
+
             return [
                 html.H1('Heure locale : '+str(time))
             ]
